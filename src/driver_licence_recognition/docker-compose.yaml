@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  driver_licence_recognition:
+    build:
+      context: ./
+      args:
+        CONFIG_DIR_IN_CONTAINER: ${CONFIG_DIR_IN_CONTAINER}
+        CONFIG_NAME: ${CONFIG_NAME}
+    networks:
+      - triton_default
+    ports:
+      - 8081:8080
+    volumes:
+      - ${APP_CONFIGS}:${CONFIG_DIR_IN_CONTAINER}
+    env_file: ".env"
+
+
+networks:
+  triton_default:
+    external: true
