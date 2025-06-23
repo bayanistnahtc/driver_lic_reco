@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  triton:
+    container_name: tritonserver_dev
+    image: nvcr.io/nvidia/tritonserver:23.09-py3
+    command: >
+      tritonserver --model-repository=/models
+      --model-control-mode=explicit
+      --backend-config=python,shm-default-byte-size=134217728 
+      --http-port	8000
+      --grpc-port 8001
+      --metrics-port 8002
+    ports:
+      - 8000:8000
+      - 8001:8001
+      - 8002:8002
+    volumes:
+      - ${PWD}/model_repository:/models
+      - ${PWD}/app_configs:/app_configs
+    shm_size: 1g
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              # count: all
+              device_ids: ['1']
+              capabilities: [gpu]
+  test:
+    image: python:3.9
+    entrypoint: ["/bin/bash", "-c"]
+    network_mode: host
+    command: >
+      "cd /tmp && \
+      python3 -m pip install -r /tmp/requirements.txt && \
+      python3 /tmp/load_models.py --host=localhost --port=8000 && \
+      pytest ./ -vv"
+    volumes:
+      - ${SERVICE_HOME}:/tmp
+  perf:
+    image: nvcr.io/nvidia/tritonserver:23.09-py3-sdk
+    command: >
+      bash -c
+      "perf_analyzer -u localhost:8000 -m py_ru_driver_license_bls --measurement-mode=count_windows --measurement-request-count=80 --percentile=80 --input-data /data/perf_analyzer_input.json --shape=image_guid:1 -f /data/perf_base.csv \
+      && perf_analyzer -u localhost:8000 -m py_ru_driver_license_bls --measurement-mode=count_windows --measurement-request-count=80 --percentile=80 --concurrency-range 4:4 --input-data /data/perf_analyzer_input.json --shape=image_guid:1 -f /data/perf_concur.csv \
+      && perf_analyzer -u localhost:8000 -m py_ru_driver_license_bls --measurement-mode=count_windows --measurement-request-count=80 --percentile=80 --request-rate-range=10 --input-data /data/perf_analyzer_input.json --shape=image_guid:1 -f /data/perf_req_rate.csv"
+    volumes:
+      - ${TEST_PATH}/data:/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              # device_ids: ['1']
+              capabilities: [gpu]
+    depends_on:
+      test:
+        condition: service_started
+    network_mode: host
+
