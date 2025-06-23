@@ -1,0 +1,6 @@
+images_path: "images/"
+crops_path: "crops/serial_crops"
+path_to_json_file: "json_files/serial_data.json"
+trainset_path: "serial_trainset.csv"
+testset_path: "serial_testset.csv"
+num_workers: 4

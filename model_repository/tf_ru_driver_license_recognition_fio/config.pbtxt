@@ -1,0 +1,15 @@
+name: "tf_ru_driver_license_recognition_fio"
+platform: "tensorflow_savedmodel"
+max_batch_size: 0
+input [
+  {
+    name: "input"
+    dims: [-1, 320, 104, 1]
+  }
+]
+output [
+  {
+    name: "output"
+    dims: [-1, 40, 35]
+  }
+]

@@ -1,0 +1,10 @@
+model_path: /home/jovyan/ocr/weights_dl/best.pt
+images_path: /home/jovyan/detection/testing/data/driver_license/images
+labels_path: /home/jovyan/detection/testing/data/driver_license/labels
+class_ids: [6, 7, 9, 10, 11, 12]
+processor: {0: 7, 1: 6, 2: 11, 3: 10, 4: 12, 5: 9} 
+model: 
+    image_size: [1280, 1280]
+    url: 'ml-sandbox.taximaxim.local:8000'
+    scheme: "http"
+    endpoint: 'tf_ru_driver_license_detection'

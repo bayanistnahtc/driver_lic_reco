@@ -1,0 +1,29 @@
+name: "py_ru_driver_license_bls"
+backend: "python"
+max_batch_size: 0
+
+input [
+  {
+    name: "image_guid"
+    data_type: TYPE_STRING
+    dims: [-1]
+  }
+]
+output [
+  {
+    name: "recognition_response"
+    data_type: TYPE_STRING
+    dims: [-1]
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_CPU
+  }
+]
+
+parameters: {
+  key: "EXECUTION_ENV_PATH",
+  value: {string_value: "$$TRITON_MODEL_DIRECTORY/triton_backend_env.tar.gz"}
+}

@@ -1,0 +1,23 @@
+name: "tf_ru_driver_license_detection"
+platform: "tensorflow_savedmodel"
+max_batch_size: 0
+input [
+  {
+    name: "inputs"
+    dims: [1, 1280, 1280, 3]
+  }
+]
+output [
+  {
+    name: "detection_boxes"
+    dims: [1, 20, 4]
+  },
+  {
+    name: "detection_classes"
+    dims: [1, 20]
+  },
+  {
+    name: "detection_scores"
+    dims: [1, 20]
+  }
+]

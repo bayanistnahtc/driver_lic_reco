@@ -1,0 +1,34 @@
+model_path: "weights_dl/best.pt"
+path_to_dataframe: "data/driver_license.csv"
+train_path: "data/date_dl_train.csv" 
+path_to_test_dataframe: "data/driver_license_test.csv" 
+test_path: "data/dl_date_test.csv" 
+json_path: "json_files/date.json"
+crop_fields: ['dateout', 'birthday']
+section: "driver_license"
+crop_name_to_df: {
+    "surname": "c_surname",
+    "name": "c_name",
+    "middlename": "c_patronymic",
+    "siriestype3": "c_driver_license",
+    "birthday": "c_birth",
+    "dateout": "c_driver_license_date_to",
+}
+batch_size: 128
+names: 
+    0: passport
+    1: region
+    2: signature
+    3: serial
+    4: photo
+    5: info
+    6: mrd
+    7: datapassport
+    8: codepassport
+    9: placereg
+    10: surname
+    11: name
+    12: middlename
+    13: gender
+    14: yofb
+    15: placebirth

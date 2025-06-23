@@ -1,0 +1,1 @@
+python -m scripts.detection_Test.main "$1"

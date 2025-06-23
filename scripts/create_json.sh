@@ -1,0 +1,1 @@
+python -m scripts.loading_ocr_data.create_json "$1"

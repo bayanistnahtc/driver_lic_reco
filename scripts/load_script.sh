@@ -1,0 +1,1 @@
+python -m scripts.loading_ocr_data.load_crops "$1"
